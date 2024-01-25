@@ -1,4 +1,4 @@
-<!-- productDetails.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +12,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
-    // Function to fetch product details by ID
+ 
     async function fetchProductDetails(productId) {
       try {
         const response = await axios.get(`https://dummyjson.com/products/${productId}`);
@@ -23,11 +23,11 @@
       }
     }
 
-    // Function to display product details on the page
+   
     async function displayProductDetails() {
       const productDetailsContainer = document.getElementById('productDetailsContainer');
 
-      // Extract productId from the URL (assuming it's passed as a query parameter)
+   
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get('productId');
 
@@ -45,7 +45,7 @@
             <p>Brand: ${productDetails.brand}</p>
             <p>Category: ${productDetails.category}</p>
             <img src="${productDetails.thumbnail}" alt="Product Image" style="max-width: 100%;">
-            <!-- Add more details as needed -->
+           
           `;
           productDetailsContainer.appendChild(productDetailsCard);
         } else {

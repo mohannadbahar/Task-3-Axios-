@@ -11,7 +11,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
-    // Function to fetch the list of products
+  
     async function fetchProducts() {
       try {
         const response = await axios.get('https://dummyjson.com/products');
@@ -22,7 +22,7 @@
       }
     }
 
-    // Function to display the list of products on the home page
+    
     async function displayProductList() {
       const productListContainer = document.getElementById('productListContainer');
       const products = await fetchProducts();
