@@ -1,0 +1,63 @@
+<!-- productDetails.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details</title>
+</head>
+<body>
+  <div id="productDetailsContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    // Function to fetch product details by ID
+    async function fetchProductDetails(productId) {
+      try {
+        const response = await axios.get(`https://dummyjson.com/products/${productId}`);
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching product details:', error);
+        return null;
+      }
+    }
+
+    // Function to display product details on the page
+    async function displayProductDetails() {
+      const productDetailsContainer = document.getElementById('productDetailsContainer');
+
+      // Extract productId from the URL (assuming it's passed as a query parameter)
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('productId');
+
+      if (productId) {
+        const productDetails = await fetchProductDetails(productId);
+
+        if (productDetails) {
+          const productDetailsCard = document.createElement('div');
+          productDetailsCard.innerHTML = `
+            <h2>${productDetails.title}</h2>
+            <p>${productDetails.description}</p>
+            <p>Price: $${productDetails.price}</p>
+            <p>Discount: ${productDetails.discountPercentage}%</p>
+            <p>Stock: ${productDetails.stock}</p>
+            <p>Brand: ${productDetails.brand}</p>
+            <p>Category: ${productDetails.category}</p>
+            <img src="${productDetails.thumbnail}" alt="Product Image" style="max-width: 100%;">
+            <!-- Add more details as needed -->
+          `;
+          productDetailsContainer.appendChild(productDetailsCard);
+        } else {
+          console.error('Product not found.');
+        }
+      } else {
+        console.error('Product ID not provided in the URL.');
+      }
+    }
+
+    // Display product details on the productDetails.html page
+    displayProductDetails();
+  </script>
+</body>
+</html>

@@ -4,64 +4,47 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Listing</title>
+  <title>Product List</title>
 </head>
 <body>
-  <div id="productContainer"></div>
+  <div id="productListContainer"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
-    const apiUrl = 'https://dummyjson.com/products'; 
-
-    const productApi = {
-      getProducts: async function () {
-        try {
-          const response = await axios.get(apiUrl);
-          return response.data;
-        } catch (error) {
-          console.error('Error fetching data:', error);
-          return null;
-        }
-      },
-    };
-
-    async function displayProducts() {
-      const productContainer = document.getElementById('productContainer');
-      const data = await productApi.getProducts();
-
-      if (data) {
-        data.products.forEach(product => {
-          const productCard = document.createElement('div');
-          productCard.innerHTML = `
-            <h2>${product.title}</h2>
-          <img src="${product.thumbnail}" alt="${product.title}" style="max-width: 200px;"><br>
-            <button onclick="viewDetails('${product.id}', '${product.thumbnail}', this)">Details</button>
-            <div id="details_${product.id}" style="display: none;">
-              <h3>Product Details</h3>
-              <img src="${product.thumbnail}" alt="${product.title}" style="max-width: 200px;">
-              <p>ID: ${product.id}</p>
-              <p>${product.description}</p>
-			  <p>Price: $${product.price}</p>
-            <p>Discount: ${product.discountPercentage}%</p>
-            <p>Stock: ${product.stock}</p>
-            <p>Brand: ${product.brand}</p>
-            <p>Category: ${product.category}</p>
-      
-            </div>
-          `;
-          productContainer.appendChild(productCard);
-        });
+    // Function to fetch the list of products
+    async function fetchProducts() {
+      try {
+        const response = await axios.get('https://dummyjson.com/products');
+        return response.data.products || [];
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        return [];
       }
     }
 
-    function viewDetails(productId, thumbnail, button) {
-      const detailsContainer = document.getElementById(`details_${productId}`);
-      detailsContainer.style.display = 'block';
-      button.style.display = 'none'; 
+    // Function to display the list of products on the home page
+    async function displayProductList() {
+      const productListContainer = document.getElementById('productListContainer');
+      const products = await fetchProducts();
+
+      products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.innerHTML = `
+          <h2>${product.title}</h2>
+          <img src="${product.thumbnail}" alt="Product Image" style="max-width: 100%;">
+          <button onclick="redirectToProductDetails(${product.id})">Details</button>
+        `;
+        productListContainer.appendChild(productCard);
+      });
     }
 
-    // Example usage: Display products on the home page
-    displayProducts();
+    // Function to redirect to the product details page
+    function redirectToProductDetails(productId) {
+      window.location.href = `productDetails.html?productId=${productId}`;
+    }
+
+    // Display the product list on the home page
+    displayProductList();
   </script>
 </body>
 </html>
